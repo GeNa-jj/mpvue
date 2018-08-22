@@ -1,16 +1,25 @@
 <!--组件测试-->
 <template>
   <div>
-    <div v-for="(item, index) in books" :key="index" class="booklist" @click="bookDetial(item._id, item.title)">
-      <div class="imgUrl">
-        <img :src="'http://statics.zhuishushenqi.com' + item.cover" alt="">
-      </div>
-      <div class="content">
-        <h1>{{item.title}}</h1>
-        <p>{{item.author}}</p>
-        <p class="detail">{{item.shortIntro}}</p>
+    <div class="navbar">
+      <div v-for="(item, index) in tabs" :key="index" :id="index" :class="{'active': activeIndex === index}" class="navbar_item" @click="tabClick">
+        {{item.name}}
       </div>
     </div>
+    <swiper class="swiperPage" :duration="300" :style="'height:' + windowHeight + 'px'" @change="swiperChange" :current="currentTab" @animationfinish="onAnimationfinish" skip-hidden-item-layout="true">
+      <swiper-item  v-for="(item, idx) in tabs" :key="idx">
+        <div v-for="(item, index) in books" :key="index" class="booklist" @click="bookDetial(item)">
+          <div class="imgUrl">
+            <img :src="arr[index] ? 'http://statics.zhuishushenqi.com' + item.cover : '../../../static/images/loading.gif'" alt="">
+          </div>
+          <div class="content">
+            <h1>{{item.title}}</h1>
+            <p>{{item.author}}</p>
+            <p class="detail">{{item.shortIntro}}</p>
+          </div>
+        </div>
+      </swiper-item>
+    </swiper>
   </div>
 </template>
 
@@ -21,16 +30,53 @@
         books: '',
         name: '玄幻',
         gender: 'male',
-        limit: 20,
-        isNoMore: false
+        limit: 10,
+        isNoMore: false,
+        windowWidth: '',
+        windowHeight: '',
+        arr: [],
+        tabs: [
+          {
+            name: '热门',
+            type: 0
+          },
+          {
+            name: '新书',
+            type: 1
+          },
+          {
+            name: '好评',
+            type: 2
+          },
+          {
+            name: '完结',
+            type: 3
+          }
+        ],
+        activeIndex: 0,
+        currentTab: 0
       }
     },
-    components: {
-    },
     methods: {
-      bookDetial (id, name) {
+      tabClick (e) {
+        this.activeIndex = e.currentTarget.id
+        this.currentTab = this.activeIndex
+      },
+      swiperChange (e) {
+        this.currentTab = e.mp.detail.current
+        this.activeIndex = this.currentTab
+      },
+      onAnimationfinish () {
+        console.log('滑动完成.....')
+      },
+      bookDetial (item) {
+        wx.setStorageSync('id', item._id)
+        wx.setStorageSync('title', item.title)
+        wx.setStorageSync('author', item.author)
+        wx.setStorageSync('shortIntro', item.shortIntro)
+        wx.setStorageSync('cover', item.cover)
         wx.navigateTo({
-          url: '/pages/bookdetail/main?id=' + encodeURIComponent(id) + '&name=' + encodeURIComponent(name)
+          url: '/pages/introduce/main'
         })
       },
       // 请求数据
@@ -49,6 +95,9 @@
               return
             }
             this.books = res.books
+            for (let i = 0; i < this.books.length; i++) {
+              this.arr.push(false)
+            }
           }).catch(err => {
             console.log(err)
           })
@@ -60,7 +109,17 @@
         }
         this.limit += 10
         this.getDateSet()
+      },
+      lazyload (res) {
+        let scrollTop = res ? res.scrollTop : 0
+        let len = ((this.windowHeight + scrollTop) / 126) | 0
+        for (let i = 0; i < len + 1; i++) {
+          this.$set(this.arr, i, true)
+        }
       }
+    },
+    onPageScroll (res) {
+      this.lazyload(res)
     },
     // 上拉加载，拉到底部触发
     onReachBottom () {
@@ -68,6 +127,13 @@
       this.loadMore()
     },
     onLoad () {
+      const that = this
+      wx.getSystemInfo({
+        success: function (res) {
+          that.windowHeight = res.windowHeight
+          that.windowWidth = res.windowWidth
+        }
+      })
       if (this.$root.$mp.query.name) {
         this.name = decodeURIComponent(this.$root.$mp.query.name)
       }
@@ -80,6 +146,7 @@
       console.log('name：', this.name)
       console.log('gender：', this.gender)
       this.getDateSet()
+      this.lazyload()
     },
     onUnload () {
       this.books = ''
@@ -92,6 +159,35 @@
 </script>
 
 <style lang="scss" scoped>
+  .navbar{
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    background-color: #fff;
+    width: 100%;
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    .navbar_item{
+      flex: 1;
+      font-size: .26rem;
+      text-align: center;
+      color: #ccc;
+      height: .8rem;
+      line-height: .8rem;
+      transition: all .2s ease-in-out;
+    }
+    .active{
+      color: #000;
+      font-size: .28rem;
+    }
+  }
+  .swiperPage{
+    margin-top: .8rem;
+    swiper-item{
+      overflow: auto;
+    }
+  }
   .booklist{
     display: flex;
     padding: .2rem 0;
@@ -109,14 +205,15 @@
       height: 2rem;
       h1{
         font-weight: bold;
+        font-size: .34rem;
       }
       p{
         color: #ccc;
-        font-size: 16px;
-        margin-top: .1rem;
+        font-size: .3rem;
+        margin-top: .16rem;
       }
       .detail{
-        font-size: 12px;
+        font-size: .24rem;
         overflow:hidden;
         text-overflow:ellipsis;
         display:-webkit-box;

@@ -7,7 +7,8 @@
     "pages/ranking/main",
     "pages/bookdetail/main",
     "pages/bookmain/main",
-    "pages/booklist/main"
+    "pages/booklist/main",
+    "pages/introduce/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

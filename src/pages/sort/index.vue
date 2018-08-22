@@ -83,7 +83,7 @@
       border: 1px solid #ccc;
       margin: .1rem;
       border-radius: .1rem;
-      font-size: .3rem;
+      font-size: .26rem;
     }
   }
 </style>

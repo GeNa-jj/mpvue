@@ -10,8 +10,7 @@
     data () {
       return {
         chapters: '',
-        id: '5816b415b06d1d32157790b1',
-        title: '',
+        id: '',
         name: ''
       }
     },
@@ -44,6 +43,10 @@
         }).catch(err => {
           console.log(err)
         })
+    },
+    onUnload () {
+      this.id = ''
+      this.name = ''
     }
   }
 </script>
