@@ -29,42 +29,53 @@
   export default {
     data () {
       return {
-        books: '',
+        books: [],
         name: '玄幻',
         gender: 'male',
-        limit: 10,
-        isNoMore: false,
+        limit: [10, 10, 10, 10],
+        isNoMore: [false, false, false, false],
         windowHeight: '',
         arr: [],
+        type: 'hot',
         tabs: [
           {
             name: '热门',
-            type: 0
+            type: 'hot'
           },
           {
             name: '新书',
-            type: 1
+            type: 'new'
           },
           {
             name: '好评',
-            type: 2
+            type: 'reputation'
           },
           {
             name: '完结',
-            type: 3
+            type: 'over'
           }
         ],
         activeIndex: 0,
         currentTab: 0
       }
     },
+    watch: {
+      currentTab (newIdx) {
+        this.type = this.tabs[newIdx].type
+        this.books = []
+        wx.pageScrollTo({
+          scrollTop: 0,
+          duration: 0
+        })
+        this.getDateSet()
+      }
+    },
     methods: {
       tabClick (e) {
         this.activeIndex = e.currentTarget.id
-        this.currentTab = this.activeIndex
+        this.currentTab = +this.activeIndex
       },
       swiperChange (e) {
-        console.log(e)
         this.currentTab = e.mp.detail.current
         this.activeIndex = this.currentTab
       },
@@ -85,32 +96,35 @@
       getDateSet () {
         this.$ajax.get(this.apis.privilegeManageApis.categories, {
           gender: this.gender,
-          type: 'hot', // hot reputation over new
+          type: this.type, // hot reputation over new
           major: this.name,
           start: 0,
-          limit: this.limit
+          limit: this.limit[this.currentTab]
         })
           .then(res => {
             console.log(res)
             if (res.books.length === this.books.length) {
-              this.isNoMore = true
+              this.isNoMore[this.currentTab] = true
               return
             }
             this.books = res.books
+            this.arr = []
             for (let i = 0; i < this.books.length; i++) {
               this.arr.push(false)
             }
-            this.windowHeight = 126 * this.books.length - 41
+            this.windowHeight = 126 * this.books.length
+            this.lazyload()
           }).catch(err => {
             console.log(err)
           })
       },
       loadMore () {
-        if (this.isNoMore) {
+        console.log(this.isNoMore[this.currentTab])
+        if (this.isNoMore[this.currentTab]) {
           wx.stopPullDownRefresh()
           return
         }
-        this.limit += 10
+        this.limit[this.currentTab] += 10
         this.getDateSet()
       },
       lazyload (res) {
@@ -149,14 +163,15 @@
       console.log('name：', this.name)
       console.log('gender：', this.gender)
       this.getDateSet()
-      this.lazyload()
     },
     onUnload () {
-      this.books = ''
+      this.books = []
       this.name = '玄幻'
       this.gender = 'male'
-      this.limit = 20
-      this.isNoMore = false
+      this.limit = [10, 10, 10, 10]
+      this.isNoMore = [false, false, false, false]
+      this.windowHeight = ''
+      this.arr = []
     }
   }
 </script>
@@ -166,7 +181,7 @@
     position: fixed;
     left: 0;
     top: 0;
-    z-index: 2;
+    z-index: 9999;
     background-color: #fff;
     width: 100%;
     display: flex;
