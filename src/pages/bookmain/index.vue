@@ -1,7 +1,8 @@
 <!--组件测试-->
 <template>
-  <div style="text-align: center;">
-    <h2>{{body}}</h2>
+  <div style="text-align: left;padding-left:10px;padding-right:10px;">
+    <!-- <h2>{{body}}</h2> -->
+    <p v-for="(item, index) in body" :key="index" style="text-indent:2em">{{item}}</p>
   </div>
 </template>
 
@@ -35,7 +36,15 @@
       this.$ajax.get(this.apis.privilegeManageApis.bookMain + '/' + this.link)
         .then(res => {
           console.log(res)
-          this.body = res.chapter.body
+          this.body = JSON.stringify(res.chapter.body).split('n')
+          let newBody = []
+          this.body.forEach(item => {
+            // 使用正则去掉多余的符号
+            newBody.push(item.replace(/"/g, '').replace(/\\/g, ''))
+            // console.log(item.replace(/"/g, '').replace(/\\/g, ''))
+          })
+          this.$set(this, 'body', newBody)
+          // console.log(JSON.stringify(res.chapter.body).split('n'))
         }).catch(err => {
           console.log(err)
         })
