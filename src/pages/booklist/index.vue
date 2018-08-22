@@ -6,19 +6,21 @@
         {{item.name}}
       </div>
     </div>
-    <swiper class="swiperPage" :duration="300" :style="'height:' + windowHeight + 'px'" @change="swiperChange" :current="currentTab" @animationfinish="onAnimationfinish" skip-hidden-item-layout="true">
-      <swiper-item  v-for="(item, idx) in tabs" :key="idx">
-        <div v-for="(item, index) in books" :key="index" class="booklist" @click="bookDetial(item)">
-          <div class="imgUrl">
-            <img :src="arr[index] ? 'http://statics.zhuishushenqi.com' + item.cover : '../../../static/images/loading.gif'" alt="">
-          </div>
-          <div class="content">
-            <h1>{{item.title}}</h1>
-            <p>{{item.author}}</p>
-            <p class="detail">{{item.shortIntro}}</p>
-          </div>
-        </div>
-      </swiper-item>
+    <swiper class="swiperPage" :duration="300" @change="swiperChange" :style="'height:' +  windowHeight + 'px'" :current="currentTab" @animationfinish="onAnimationfinish" :skip-hidden-item-layout="true">
+      <block v-for="(item, idx) in tabs" :key="idx">
+          <swiper-item>
+            <div v-for="(item, index) in books" :key="index" class="booklist" @click="bookDetial(item)">
+              <div class="imgUrl">
+                <img :src="arr[index] ? 'http://statics.zhuishushenqi.com' + item.cover : '../../../static/images/loading.gif'" alt="">
+              </div>
+              <div class="content">
+                <h1>{{item.title}}</h1>
+                <p>{{item.author}}</p>
+                <p class="detail">{{item.shortIntro}}</p>
+              </div>
+            </div>
+          </swiper-item>
+      </block>
     </swiper>
   </div>
 </template>
@@ -32,7 +34,6 @@
         gender: 'male',
         limit: 10,
         isNoMore: false,
-        windowWidth: '',
         windowHeight: '',
         arr: [],
         tabs: [
@@ -63,6 +64,7 @@
         this.currentTab = this.activeIndex
       },
       swiperChange (e) {
+        console.log(e)
         this.currentTab = e.mp.detail.current
         this.activeIndex = this.currentTab
       },
@@ -98,6 +100,7 @@
             for (let i = 0; i < this.books.length; i++) {
               this.arr.push(false)
             }
+            this.windowHeight = 126 * this.books.length - 41
           }).catch(err => {
             console.log(err)
           })
@@ -127,13 +130,13 @@
       this.loadMore()
     },
     onLoad () {
-      const that = this
-      wx.getSystemInfo({
-        success: function (res) {
-          that.windowHeight = res.windowHeight
-          that.windowWidth = res.windowWidth
-        }
-      })
+      // const that = this
+      // wx.getSystemInfo({
+      //   success: function (res) {
+      //     that.windowHeight = res.windowHeight - 41
+      //     that.windowWidth = res.windowWidth
+      //   }
+      // })
       if (this.$root.$mp.query.name) {
         this.name = decodeURIComponent(this.$root.$mp.query.name)
       }
@@ -168,13 +171,14 @@
     width: 100%;
     display: flex;
     border-bottom: 1px solid #ccc;
+    box-sizing: border-box;
     .navbar_item{
       flex: 1;
       font-size: .26rem;
       text-align: center;
       color: #ccc;
-      height: .8rem;
-      line-height: .8rem;
+      height: 41px;
+      line-height: 41px;
       transition: all .2s ease-in-out;
     }
     .active{
@@ -183,9 +187,8 @@
     }
   }
   .swiperPage{
-    margin-top: .8rem;
+    margin-top: 41px;
     swiper-item{
-      overflow: auto;
     }
   }
   .booklist{
