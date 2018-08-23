@@ -16,15 +16,22 @@
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
+    "selectedColor": "#f00",
     "list": [{
       "pagePath": "pages/index/main",
-      "text": "书架"
+      "text": "书架",
+      "iconPath": "static/images/bookrack.png",
+      "selectedIconPath": "static/images/bookrack1.png"
     }, {
       "pagePath": "pages/sort/main",
-      "text": "分类"
+      "text": "分类",
+      "iconPath": "static/images/sort.png",
+      "selectedIconPath": "static/images/sort1.png"
     }, {
       "pagePath": "pages/ranking/main",
-      "text": "排行榜"
+      "text": "排行榜",
+      "iconPath": "static/images/ranking.png",
+      "selectedIconPath": "static/images/ranking1.png"
     }]
   },
   "networkTimeout": {

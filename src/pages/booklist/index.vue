@@ -2,14 +2,14 @@
 <template>
   <div>
     <div class="navbar">
-      <div v-for="(item, index) in tabs" :key="index" :id="index" :class="{'active': activeIndex === index}" class="navbar_item" @click="tabClick">
+      <div v-for="(item, index) in tabs" :key="index" :id="index" :class="{'active': currentTab === index}" class="navbar_item" @click="tabClick">
         {{item.name}}
       </div>
     </div>
-    <swiper class="swiperPage" :duration="300" @change="swiperChange" style="height:calc(100vh - 45px)" :current="currentTab" @animationfinish="onAnimationfinish" :skip-hidden-item-layout="true">
+    <swiper class="swiperPage" :duration="300" @change="swiperChange" style="height:calc(100vh - 41px)" :current="currentTab" @animationfinish="onAnimationfinish" skip-hidden-item-layout="true">
       <!-- 热门 -->
       <swiper-item>
-        <scroll-view scroll-y style="height: calc(100vh - 45px)" scroll-top="0" lower-threshold="150" @scrolltolower="loadMore">
+        <scroll-view scroll-y style="height: calc(100vh - 41px)" scroll-top="0" lower-threshold="150" @scrolltolower="loadMore">
           <div v-for="(item, index) in booksHot" :key="index" class="booklist" @click="bookDetial(item)">
             <div class="imgUrl">
               <img :src="'http://statics.zhuishushenqi.com' + item.cover" alt="">
@@ -25,7 +25,7 @@
 
       <!-- 新书 -->
       <swiper-item>
-        <scroll-view scroll-y style="height: calc(100vh - 45px)" scroll-top="0" lower-threshold="150" @scrolltolower="loadMore">
+        <scroll-view scroll-y style="height: calc(100vh - 41px)" scroll-top="0" lower-threshold="150" @scrolltolower="loadMore">
           <div v-for="(item, index) in booksNew" :key="index" class="booklist" @click="bookDetial(item)">
             <div class="imgUrl">
               <img :src="'http://statics.zhuishushenqi.com' + item.cover" alt="">
@@ -41,7 +41,7 @@
 
       <!-- 好评 -->
       <swiper-item>
-        <scroll-view scroll-y style="height: calc(100vh - 45px)" scroll-top="0" lower-threshold="150" @scrolltolower="loadMore">
+        <scroll-view scroll-y style="height: calc(100vh - 41px)" scroll-top="0" lower-threshold="150" @scrolltolower="loadMore">
           <div v-for="(item, index) in booksReputation" :key="index" class="booklist" @click="bookDetial(item)">
             <div class="imgUrl">
               <img :src="'http://statics.zhuishushenqi.com' + item.cover" alt="">
@@ -57,7 +57,7 @@
 
       <!-- 完结 -->
       <swiper-item>
-        <scroll-view scroll-y style="height: calc(100vh - 45px)" scroll-top="0" lower-threshold="150" @scrolltolower="loadMore">
+        <scroll-view scroll-y style="height: calc(100vh - 41px)" scroll-top="0" lower-threshold="150" @scrolltolower="loadMore">
           <div v-for="(item, index) in booksOver" :key="index" class="booklist" @click="bookDetial(item)">
             <div class="imgUrl">
               <img :src="'http://statics.zhuishushenqi.com' + item.cover" alt="">
@@ -105,7 +105,6 @@
             type: 'over'
           }
         ],
-        activeIndex: 0,
         currentTab: 0
       }
     },
@@ -126,12 +125,11 @@
     },
     methods: {
       tabClick (e) {
-        this.activeIndex = e.currentTarget.id
-        this.currentTab = +this.activeIndex
+        if (this.currentTab === +e.currentTarget.id) return
+        this.currentTab = +e.currentTarget.id
       },
       swiperChange (e) {
-        this.currentTab = e.mp.detail.current
-        this.activeIndex = this.currentTab
+        this.currentTab = +e.mp.detail.current
       },
       onAnimationfinish () {
         console.log('滑动完成.....')
@@ -253,6 +251,7 @@
       this.gender = 'male'
       this.limit = [10, 10, 10, 10]
       this.isNoMore = [false, false, false, false]
+      this.currentTab = 0
     }
   }
 </script>
@@ -272,10 +271,34 @@
       color: #ccc;
       height: 41px;
       line-height: 41px;
-      transition: all .2s ease-in-out;
+      transition: 0.2s all linear;
+      position: relative;
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 100%;
+        width: 0;
+        height: 98%;
+        border-bottom: 2px solid #f00;
+        transition: 0.2s all linear;
+      }
     }
     .active{
-      color: #000;border-bottom: 3px solid #000;
+      color: #000;
+      font-weight: 700;
+      /*border-bottom: 3px solid #000;*/
+    }
+    .active ~ .navbar_item::before {
+      left: 0;
+    }
+    .active::before {
+      width: 100%;
+      left: 0;
+      top: 0;
+    }
+    .hover::before{
+      width: 200%;
     }
   }
   .booklist{
