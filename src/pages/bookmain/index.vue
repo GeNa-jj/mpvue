@@ -1,8 +1,8 @@
 <!--组件测试-->
 <template>
-  <div style="text-align: left;padding-left:10px;padding-right:10px;">
+  <div class="bookmain">
     <!-- <h2>{{body}}</h2> -->
-    <p v-for="(item, index) in body" :key="index" style="text-indent:2em">{{item}}</p>
+    <p v-for="(item, index) in body" :key="index">{{item}}</p>
   </div>
 </template>
 
@@ -51,3 +51,15 @@
     }
   }
 </script>
+
+<style lang="scss" scoped>
+  .bookmain{
+    text-align: left;
+    padding: 0 9px;
+    p{
+      text-indent: 2em;
+      line-height: 1.5;
+      margin: 20px 0;
+    }
+  }
+</style>

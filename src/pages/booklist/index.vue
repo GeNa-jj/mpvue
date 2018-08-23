@@ -6,10 +6,10 @@
         {{item.name}}
       </div>
     </div>
-    <swiper class="swiperPage" :duration="300" @change="swiperChange" style="height:calc(100vh - 41px)" :current="currentTab" @animationfinish="onAnimationfinish" skip-hidden-item-layout="true">
+    <swiper class="swiperPage" :duration="300" @change="swiperChange" style="height:calc(100vh - 42px)" :current="currentTab" @animationfinish="onAnimationfinish" skip-hidden-item-layout="true">
       <!-- 热门 -->
       <swiper-item>
-        <scroll-view scroll-y style="height: calc(100vh - 41px)" scroll-top="0" lower-threshold="150" @scrolltolower="loadMore">
+        <scroll-view scroll-y style="height: calc(100vh - 42px)" scroll-top="0" lower-threshold="150" @scrolltolower="loadMore">
           <div v-for="(item, index) in booksHot" :key="index" class="booklist" @click="bookDetial(item)">
             <div class="imgUrl">
               <img :src="'http://statics.zhuishushenqi.com' + item.cover" alt="">
@@ -25,7 +25,7 @@
 
       <!-- 新书 -->
       <swiper-item>
-        <scroll-view scroll-y style="height: calc(100vh - 41px)" scroll-top="0" lower-threshold="150" @scrolltolower="loadMore">
+        <scroll-view scroll-y style="height: calc(100vh - 42px)" scroll-top="0" lower-threshold="150" @scrolltolower="loadMore">
           <div v-for="(item, index) in booksNew" :key="index" class="booklist" @click="bookDetial(item)">
             <div class="imgUrl">
               <img :src="'http://statics.zhuishushenqi.com' + item.cover" alt="">
@@ -41,7 +41,7 @@
 
       <!-- 好评 -->
       <swiper-item>
-        <scroll-view scroll-y style="height: calc(100vh - 41px)" scroll-top="0" lower-threshold="150" @scrolltolower="loadMore">
+        <scroll-view scroll-y style="height: calc(100vh - 42px)" scroll-top="0" lower-threshold="150" @scrolltolower="loadMore">
           <div v-for="(item, index) in booksReputation" :key="index" class="booklist" @click="bookDetial(item)">
             <div class="imgUrl">
               <img :src="'http://statics.zhuishushenqi.com' + item.cover" alt="">
@@ -57,7 +57,7 @@
 
       <!-- 完结 -->
       <swiper-item>
-        <scroll-view scroll-y style="height: calc(100vh - 41px)" scroll-top="0" lower-threshold="150" @scrolltolower="loadMore">
+        <scroll-view scroll-y style="height: calc(100vh - 42px)" scroll-top="0" lower-threshold="150" @scrolltolower="loadMore">
           <div v-for="(item, index) in booksOver" :key="index" class="booklist" @click="bookDetial(item)">
             <div class="imgUrl">
               <img :src="'http://statics.zhuishushenqi.com' + item.cover" alt="">
@@ -221,9 +221,9 @@
       //   }
       // }
     },
-    onPageScroll (res) {
-      this.lazyload(res)
-    },
+    // onPageScroll (res) {
+    //   this.lazyload(res)
+    // },
     // 上拉加载，拉到底部触发
     onReachBottom () {
       // 加载更多
