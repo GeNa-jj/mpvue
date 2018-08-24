@@ -29,11 +29,11 @@
       if (this.$root.$mp.query.id) {
         this.id = this.$root.$mp.query.id
       }
-      if (this.$root.$mp.query.name) {
-        this.name = decodeURIComponent(this.$root.$mp.query.name)
+      if (this.$root.$mp.query.title) {
+        this.title = decodeURIComponent(this.$root.$mp.query.title)
       }
       wx.setNavigationBarTitle({
-        title: this.name
+        title: this.title
       })
       console.log('id：', decodeURIComponent(this.id))
       this.$ajax.get(this.apis.privilegeManageApis.bookMark + '/' + this.id)

@@ -3,11 +3,12 @@
   <div class="bookmain">
     <!-- <h2>{{body}}</h2> -->
     <p v-for="(item, index) in body" :key="index">{{item}}</p>
-    <div class="menu" @click="getMenu"></div>
+    <div class="menu" :class="{'menuBlack': showMenu}" @click="getMenu"></div>
     <div class="bottomBox" :class="{'showBtn': showMenu}">
-      <button>上一章</button>
-      <button>目录</button>
-      <button>下一章</button>
+      <div>上一章</div>
+      <div @click="goBookList">目录</div>
+      <div>书架</div>
+      <div>下一章</div>
     </div>
   </div>
 </template>
@@ -20,11 +21,17 @@
         body: '',
         link: encodeURIComponent('http://book.my716.com/getBooks.aspx?method=content&bookId=1228859&chapterFile=U_1228859_201803081001399585_4670_1.txt'),
         title: '',
-        id: '5642be60f1b24c7a7468c5d7',
+        id: '',
         showMenu: false
       }
     },
     methods: {
+      goBookList () {
+        wx.navigateTo({
+          url: '/pages/section/main?id=' + encodeURIComponent(this.id) + '&title=' + encodeURIComponent(this.title)
+        })
+      },
+      // 弹出下面菜单
       getMenu () {
         this.showMenu = !this.showMenu
       }
@@ -58,13 +65,14 @@
         }).catch(err => {
           console.log(err)
         })
-      this.$ajax.get(this.apis.privilegeManageApis.bookMark + '/' + this.id)
-        .then(res => {
-          console.log(res)
-          this.chapters = res.mixToc.chapters
-        }).catch(err => {
-          console.log(err)
-        })
+    },
+    onUnload () {
+      this.chapters = {}
+      this.body = ''
+      this.link = ''
+      this.title = ''
+      this.id = ''
+      this.showMenu = false
     }
   }
 </script>
@@ -81,23 +89,33 @@
     }
     .menu{
       position: fixed;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 200px;
-      height: 400px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      transition: all .2s ease-in-out;
+    }
+    .menuBlack{
+      background-color: #000;
+      opacity: .5;
     }
     .bottomBox{
       position: fixed;
       display: flex;
       left: 0;
+      background-color: #fff;
+      color: #f00;
       bottom: -50px;
       width: 100%;
-      height: 50px;
       transition: all .2s ease-in-out;
-      button{
+      z-index: 999;
+      border-top: 1px solid #ccc;
+      div{
+        height: 50px;
+        line-height: 50px;
         text-align: center;
         flex: 1;
+        font-size: 13px;
       }
     }
     .showBtn{

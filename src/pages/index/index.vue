@@ -97,9 +97,9 @@ export default {
     //     return true
     //   }
     // },
-    bookDetial (id, name) {
+    bookDetial (id, title) {
       wx.navigateTo({
-        url: '/pages/section/main?id=' + encodeURIComponent(id) + '&name=' + encodeURIComponent(name)
+        url: '/pages/section/main?id=' + encodeURIComponent(id) + '&title=' + encodeURIComponent(title)
       })
     }
   },
