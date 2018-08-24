@@ -4,9 +4,11 @@
     <!-- <h2>{{body}}</h2> -->
     <p v-for="(item, index) in body" :key="index">{{item}}</p>
     <div class="menu" @click="getMenu"></div>
-    <scroll-view scroll-y style="height: calc(100vh - 42px)" scroll-top="0">
-      <button v-for="(item, index) in chapters" :key="index">{{item.title}}</button>
-    </scroll-view>
+    <div class="bottomBox" :class="{'showBtn': showMenu}">
+      <button>上一章</button>
+      <button>目录</button>
+      <button>下一章</button>
+    </div>
   </div>
 </template>
 
@@ -17,11 +19,14 @@
         chapters: {},
         body: '',
         link: encodeURIComponent('http://book.my716.com/getBooks.aspx?method=content&bookId=1228859&chapterFile=U_1228859_201803081001399585_4670_1.txt'),
-        title: ''
+        title: '',
+        id: '5642be60f1b24c7a7468c5d7',
+        showMenu: false
       }
     },
     methods: {
       getMenu () {
+        this.showMenu = !this.showMenu
       }
     },
     mounted () {
@@ -31,7 +36,9 @@
       if (this.$root.$mp.query.title) {
         this.title = decodeURIComponent(this.$root.$mp.query.title)
       }
-      console.log(this.title)
+      if (this.$root.$mp.query.id) {
+        this.id = decodeURIComponent(this.$root.$mp.query.id)
+      }
       wx.setNavigationBarTitle({
         title: this.title
       })
@@ -48,6 +55,13 @@
           })
           this.$set(this, 'body', newBody)
           // console.log(JSON.stringify(res.chapter.body).split('n'))
+        }).catch(err => {
+          console.log(err)
+        })
+      this.$ajax.get(this.apis.privilegeManageApis.bookMark + '/' + this.id)
+        .then(res => {
+          console.log(res)
+          this.chapters = res.mixToc.chapters
         }).catch(err => {
           console.log(err)
         })
@@ -72,6 +86,22 @@
       transform: translate(-50%, -50%);
       width: 200px;
       height: 400px;
+    }
+    .bottomBox{
+      position: fixed;
+      display: flex;
+      left: 0;
+      bottom: -50px;
+      width: 100%;
+      height: 50px;
+      transition: all .2s ease-in-out;
+      button{
+        text-align: center;
+        flex: 1;
+      }
+    }
+    .showBtn{
+      bottom: 0;
     }
   }
 </style>

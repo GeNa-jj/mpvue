@@ -1,8 +1,8 @@
 <!--组件测试-->
 <template>
-  <div style="text-align: center;">
+  <div>
     <view class="searchBox">
-      <input v-model="inputValue" class="into"/>
+      <input confirm-type="search" v-model="inputValue" class="into" placeholder="请输入书名或作者" placeholder-style="color: #ccc;"/>
       <button @click="search" size="mini" class="btn">搜索</button>
     </view>
     <div v-for="(item, index) in booksList" :key="index" class="booklist" @click="bookDetial(item)">
@@ -51,22 +51,23 @@
 
 <style lang="scss" scoped>
 .searchBox{
+  padding: 0 10px;
   .into{
+    box-sizing: border-box;
     border: 1px solid #ccc;
-    width: 75%;
+    width: 280px;
     display: inline-block;
-    // position:absolute;
-    // left:6px;
-    // top:3px;
     height: 30px;
-    vertical-align: baseline;
+    vertical-align: middle;
     border-radius:5px;
+    padding-left: 20px;
+    font-size: 13px;
   }
   .btn{
+    vertical-align: middle;
     margin-left: 10px;
-    // position: absolute;
-    // right: 10px;
-    // top:0
+    height: 30px;
+    line-height: 30px;
   }
 }
 .booklist{
@@ -100,7 +101,7 @@
       text-overflow:ellipsis;
       display:-webkit-box;
       -webkit-box-orient:vertical;
-      -webkit-line-clamp:2;
+      -webkit-line-clamp: 2;
       margin-top: .3rem;
     }
   }

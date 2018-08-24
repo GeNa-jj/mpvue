@@ -24,7 +24,7 @@
       "iconPath": "static/images/bookrack.png",
       "selectedIconPath": "static/images/bookrack1.png"
     }, {
-      "pagePath": "pages/sort/main",
+      "pagePath": "pages/bookmain/main",
       "text": "分类",
       "iconPath": "static/images/sort.png",
       "selectedIconPath": "static/images/sort1.png"
