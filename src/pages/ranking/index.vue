@@ -1,7 +1,7 @@
 <!--组件测试-->
 <template>
-  <div style="text-align: center;">
-    <button v-for="(item, index) in ranking" :key="index" @click="bookDetial(item._id)">{{item.title}}</button>
+  <div class="ranking">
+    <button v-for="(item, index) in ranking" :key="index" @click="bookDetial(item)" v-if="item.monthRank" class="item">{{item.title}}</button>
   </div>
 </template>
 
@@ -13,9 +13,9 @@
       }
     },
     methods: {
-      bookDetial (id) {
+      bookDetial (item) {
         wx.navigateTo({
-          url: '/pages/booklist/main?id=' + encodeURIComponent(id)
+          url: '/pages/ranklist/main?id=' + encodeURIComponent(item._id) + '&monthRank=' + encodeURIComponent(item.monthRank) + '&totalRank=' + encodeURIComponent(item.totalRank) + '&title=' + encodeURIComponent(item.title)
         })
       }
     },
@@ -34,3 +34,19 @@
     }
   }
 </script>
+
+<style lang="scss" scoped>
+  .ranking{
+    padding: 10px;
+    .item{
+      height: 50px;
+      line-height: 50px;
+      font-size: 13px;
+      border: 1px solid #f00;
+      color: #f00;
+      margin-bottom: 15px;
+      text-align: center;
+      border-radius: 5px;
+    }
+  }
+</style>

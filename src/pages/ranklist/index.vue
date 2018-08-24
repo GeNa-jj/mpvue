@@ -7,10 +7,10 @@
       </div>
     </div>
     <swiper class="swiperPage" :duration="300" @change="swiperChange" style="height:calc(100vh - 42px)" :current="currentTab" @animationfinish="onAnimationfinish" skip-hidden-item-layout="true">
-      <!-- 热门 -->
+      <!-- 周榜 -->
       <swiper-item>
         <scroll-view scroll-y style="height: calc(100vh - 42px)" scroll-top="0" lower-threshold="150" @scrolltolower="loadMore" enable-back-to-top="true">
-          <div v-for="(item, index) in booksHot" :key="index" class="booklist" @click="bookDetial(item)">
+          <div v-for="(item, index) in books[0]" :key="index" class="booklist" @click="bookDetial(item)">
             <div class="imgUrl">
               <img :src="'http://statics.zhuishushenqi.com' + item.cover" alt="">
             </div>
@@ -23,10 +23,10 @@
         </scroll-view>
       </swiper-item>
 
-      <!-- 新书 -->
+      <!-- 月榜 -->
       <swiper-item>
         <scroll-view scroll-y style="height: calc(100vh - 42px)" scroll-top="0" lower-threshold="150" @scrolltolower="loadMore" enable-back-to-top="true">
-          <div v-for="(item, index) in booksNew" :key="index" class="booklist" @click="bookDetial(item)">
+          <div v-for="(item, index) in books[1]" :key="index" class="booklist" @click="bookDetial(item)">
             <div class="imgUrl">
               <img :src="'http://statics.zhuishushenqi.com' + item.cover" alt="">
             </div>
@@ -39,10 +39,10 @@
         </scroll-view>
       </swiper-item>
 
-      <!-- 好评 -->
+      <!-- 总榜 -->
       <swiper-item>
         <scroll-view scroll-y style="height: calc(100vh - 42px)" scroll-top="0" lower-threshold="150" @scrolltolower="loadMore" enable-back-to-top="true">
-          <div v-for="(item, index) in booksReputation" :key="index" class="booklist" @click="bookDetial(item)">
+          <div v-for="(item, index) in books[2]" :key="index" class="booklist" @click="bookDetial(item)">
             <div class="imgUrl">
               <img :src="'http://statics.zhuishushenqi.com' + item.cover" alt="">
             </div>
@@ -55,21 +55,6 @@
         </scroll-view>
       </swiper-item>
 
-      <!-- 完结 -->
-      <swiper-item>
-        <scroll-view scroll-y style="height: calc(100vh - 42px)" scroll-top="0" lower-threshold="150" @scrolltolower="loadMore" enable-back-to-top="true">
-          <div v-for="(item, index) in booksOver" :key="index" class="booklist" @click="bookDetial(item)">
-            <div class="imgUrl">
-              <img :src="'http://statics.zhuishushenqi.com' + item.cover" alt="">
-            </div>
-            <div class="content">
-              <h1>{{item.title}}</h1>
-              <p>{{item.author}}</p>
-              <p class="detail">{{item.shortIntro}}</p>
-            </div>
-          </div>
-        </scroll-view>
-      </swiper-item>
     </swiper>
   </div>
 </template>
@@ -78,31 +63,23 @@
   export default {
     data () {
       return {
-        booksHot: [],
-        booksNew: [],
-        booksReputation: [],
-        booksOver: [],
-        name: '玄幻',
-        gender: 'male',
-        limit: [10, 10, 10, 10],
-        isNoMore: [false, false, false, false],
-        type: 'hot',
+        books: [],
+        id: [],
+        title: '',
+        limit: [10, 10, 10],
+        isNoMore: [false, false, false],
         tabs: [
           {
-            name: '热门',
-            type: 'hot'
+            name: '周榜',
+            type: 0
           },
           {
-            name: '新书',
-            type: 'new'
+            name: '月榜',
+            type: 1
           },
           {
-            name: '好评',
-            type: 'reputation'
-          },
-          {
-            name: '完结',
-            type: 'over'
+            name: '总榜',
+            type: 2
           }
         ],
         currentTab: 0
@@ -110,16 +87,7 @@
     },
     watch: {
       currentTab (newIdx) {
-        this.type = this.tabs[newIdx].type
-        if (newIdx === 0) {
-          if (this.booksHot.length !== 0) return
-        } else if (newIdx === 1) {
-          if (this.booksNew.length !== 0) return
-        } else if (newIdx === 2) {
-          if (this.booksReputation.length !== 0) return
-        } else if (newIdx === 3) {
-          if (this.booksOver.length !== 0) return
-        }
+        if (this.books[newIdx]) return
         this.getDateSet()
       }
     },
@@ -146,111 +114,45 @@
       },
       // 请求数据
       getDateSet () {
-        this.$ajax.get(this.apis.privilegeManageApis.categories, {
-          gender: this.gender,
-          type: this.type, // hot reputation over new
-          major: this.name,
-          start: 0,
-          limit: this.limit[this.currentTab]
-        })
+        this.$ajax.get(this.apis.privilegeManageApis.bookList + '/' + this.id[this.currentTab])
           .then(res => {
             console.log(res)
-            switch (this.currentTab) {
-              case 0:
-                if (res.books.length === this.booksHot.length) {
-                  this.isNoMore[this.currentTab] = true
-                  return
-                }
-                this.booksHot = res.books
-                break
-              case 1:
-                if (res.books.length === this.booksNew.length) {
-                  this.isNoMore[this.currentTab] = true
-                  return
-                }
-                this.booksNew = res.books
-                break
-              case 2:
-                if (res.books.length === this.booksReputation.length) {
-                  this.isNoMore[this.currentTab] = true
-                  return
-                }
-                this.booksReputation = res.books
-                break
-              case 3:
-                if (res.books.length === this.booksOver.length) {
-                  this.isNoMore[this.currentTab] = true
-                  return
-                }
-                this.booksOver = res.books
-                break
-            }
-            // this.windowHeight = 126 * this.books.length
-            // this.lazyload()
+            // this.books[this.currentTab] = res.ranking.books
+            this.$set(this.books, this.currentTab, res.ranking.books)
           }).catch(err => {
             console.log(err)
           })
       },
       loadMore () {
-        if (this.isNoMore[this.currentTab]) {
-          wx.stopPullDownRefresh()
-          return
-        }
-        this.limit[this.currentTab] += 10
-        this.getDateSet()
+        // if (this.isNoMore[this.currentTab]) {
+        //   wx.stopPullDownRefresh()
+        //   return
+        // }
+        // this.limit[this.currentTab] += 10
+        // this.getDateSet()
       }
-      // lazyload (res) {
-      //   console.log(res)
-      //   let scrollTop = res ? res.target.scrollTop : 0
-      //   let len = ((this.windowHeight + scrollTop) / 126) | 0
-      //   console.log(len)
-      //   for (let i = 0; i < len + 1; i++) {
-      //     if (this.currentTab === 0) {
-      //       this.$set(this.arrHot, i, true)
-      //       return
-      //     } else if (this.currentTab === 1) {
-      //       this.$set(this.arrNew, i, true)
-      //       return
-      //     } else if (this.currentTab === 2) {
-      //       this.$set(this.arrReputation, i, true)
-      //       return
-      //     } else if (this.currentTab === 3) {
-      //       this.$set(this.arrOver, i, true)
-      //       return
-      //     }
-      //   }
-      // }
     },
-    // onPageScroll (res) {
-    //   this.lazyload(res)
-    // },
-    // 上拉加载，拉到底部触发
-    // onReachBottom () {
-    //   // 加载更多
-    //   this.loadMore()
-    // },
     onLoad () {
-      if (this.$root.$mp.query.name) {
-        this.name = decodeURIComponent(this.$root.$mp.query.name)
+      if (this.$root.$mp.query.title) {
+        this.title = decodeURIComponent(this.$root.$mp.query.title)
       }
-      if (this.$root.$mp.query.gender) {
-        this.gender = decodeURIComponent(this.$root.$mp.query.gender)
+      if (this.$root.$mp.query.id) {
+        this.id[0] = decodeURIComponent(this.$root.$mp.query.id)
+        this.id[1] = decodeURIComponent(this.$root.$mp.query.monthRank)
+        this.id[2] = decodeURIComponent(this.$root.$mp.query.totalRank)
       }
       wx.setNavigationBarTitle({
-        title: this.name
+        title: this.title
       })
-      console.log('name：', this.name)
+      console.log('title：', this.title)
       this.getDateSet()
     },
     onUnload () {
-      this.booksHot = []
-      this.booksNew = []
-      this.booksReputation = []
-      this.booksOver = []
-      this.name = '玄幻'
-      this.gender = 'male'
-      this.limit = [10, 10, 10, 10]
-      this.isNoMore = [false, false, false, false]
+      this.books = []
+      this.id = []
+      this.title = ''
+      this.limit = [10, 10, 10]
+      this.isNoMore = [false, false, false]
       this.currentTab = 0
     }
   }

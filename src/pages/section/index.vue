@@ -19,7 +19,7 @@
     methods: {
       bookMain (link, title) {
         wx.navigateTo({
-          url: '/pages/bookmain/main?link=' + encodeURIComponent(link) + '&title=' + encodeURIComponent(title)
+          url: '/pages/bookmain/main?link=' + encodeURIComponent(link) + '&title=' + encodeURIComponent(title) + '&id=' + encodeURIComponent(this.id)
         })
       }
     },

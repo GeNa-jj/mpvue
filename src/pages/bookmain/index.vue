@@ -3,6 +3,10 @@
   <div class="bookmain">
     <!-- <h2>{{body}}</h2> -->
     <p v-for="(item, index) in body" :key="index">{{item}}</p>
+    <div class="menu" @click="getMenu"></div>
+    <scroll-view scroll-y style="height: calc(100vh - 42px)" scroll-top="0">
+      <button v-for="(item, index) in chapters" :key="index">{{item.title}}</button>
+    </scroll-view>
   </div>
 </template>
 
@@ -10,16 +14,15 @@
   export default {
     data () {
       return {
+        chapters: {},
         body: '',
-        link: '548e97e29fb698a01dc6ee6f',
-        name: ''
+        link: encodeURIComponent('http://book.my716.com/getBooks.aspx?method=content&bookId=1228859&chapterFile=U_1228859_201803081001399585_4670_1.txt'),
+        title: ''
       }
     },
-    components: {
-    },
     methods: {
-    },
-    created () {
+      getMenu () {
+      }
     },
     mounted () {
       if (this.$root.$mp.query.link) {
@@ -56,10 +59,19 @@
   .bookmain{
     text-align: left;
     padding: 0 9px;
+    position: relative;
     p{
       text-indent: 2em;
       line-height: 1.5;
       margin: 20px 0;
+    }
+    .menu{
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 200px;
+      height: 400px;
     }
   }
 </style>

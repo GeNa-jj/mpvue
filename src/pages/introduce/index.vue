@@ -35,7 +35,7 @@
       toread () {
         const that = this
         wx.navigateTo({
-          url: '/pages/bookdetail/main?id=' + encodeURIComponent(that.id) + '&name=' + encodeURIComponent(that.title)
+          url: '/pages/section/main?id=' + encodeURIComponent(that.id) + '&name=' + encodeURIComponent(that.title)
         })
       }
     },

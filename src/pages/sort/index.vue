@@ -4,8 +4,8 @@
     <!--<card :text="goBack"></card>-->
     <!--<button open-type="getUserInfo" @getuserinfo="bindGetUserInfo">授权登录</button>-->
     <div class="sort">
-      <span v-for="(item, index) in male" :key="index" @click="bookMark(item.name, 'male')">{{item.name}}</span>
-      <span v-for="(item, index) in female" :key="index" @click="bookMark(item.name, 'female')">{{item.name}}</span>
+      <button v-for="(item, index) in male" :key="index" @click="bookMark(item.name, 'male')">{{item.name}}</button>
+      <button v-for="(item, index) in female" :key="index" @click="bookMark(item.name, 'female')">{{item.name}}</button>
     </div>
     <!--<div>-->
       <!--<span v-for="(item, index) in picture" :key="index" @click="bookMark(item.name)">{{item.name}}</span>-->
@@ -75,12 +75,13 @@
     justify-content: space-around;
     flex-wrap: wrap;
     padding: 0 .2rem;
-    span{
+    button{
       text-align: center;
       line-height: .7rem;
       width: 2rem;
       height: .7rem;
-      border: 1px solid #ccc;
+      border: 1px solid #f00;
+      color: #f00;
       margin: .1rem;
       border-radius: .1rem;
       font-size: .26rem;
