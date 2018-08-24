@@ -8,7 +8,8 @@
     "pages/bookdetail/main",
     "pages/bookmain/main",
     "pages/booklist/main",
-    "pages/introduce/main"
+    "pages/introduce/main",
+    "pages/search/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -32,6 +33,11 @@
       "text": "排行榜",
       "iconPath": "static/images/ranking.png",
       "selectedIconPath": "static/images/ranking1.png"
+    }, {
+      "pagePath": "pages/search/main",
+      "text": "搜索",
+      "iconPath": "static/images/search.png",
+      "selectedIconPath": "static/images/search1.png"
     }]
   },
   "networkTimeout": {

@@ -1,9 +1,8 @@
 {
-  "name": "mpvue",
+  "name": "mpvue-odlyan",
   "version": "1.0.0",
   "description": "A Mpvue project",
   "author": "lujianjun <lujj@healthmall.cn>",
-  "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",

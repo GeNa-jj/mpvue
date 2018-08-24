@@ -10,7 +10,9 @@ const privilegeManageApis = {
   // 分类查询
   categories: ipConfig.book + 'book/by-categories',
   // 排行榜
-  ranking: ipConfig.book + 'ranking/gender'
+  ranking: ipConfig.book + 'ranking/gender',
+  // 模糊搜索
+  search: ipConfig.book + 'book/fuzzy-search'
 }
 
 export {
