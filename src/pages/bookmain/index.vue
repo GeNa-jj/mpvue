@@ -3,16 +3,16 @@
   <div class="bookmain">
     <!-- <h2>{{body}}</h2> -->
     <p v-for="(item, index) in body" :key="index">{{item}}</p>
-    <div class="next">
-      <div>上一章</div>
-      <div>下一章</div>
+    <div class="next" v-if="body">
+      <div @click="backMain">上一章</div>
+      <div @click="nextMain">下一章</div>
     </div>
     <div class="menu" @click="getMenu"></div>
     <div class="bottomBox" :class="{'showBtn': showMenu}">
-      <div>上一章</div>
+      <div @click="backMain">上一章</div>
       <div @click="goBookList">目录</div>
-      <div>书架</div>
-      <div>下一章</div>
+      <div @click="goBack">书架</div>
+      <div @click="nextMain">下一章</div>
     </div>
   </div>
 </template>
@@ -23,13 +23,48 @@
       return {
         chapters: {},
         body: '',
-        link: encodeURIComponent('http://book.my716.com/getBooks.aspx?method=content&bookId=1228859&chapterFile=U_1228859_201803081001399585_4670_1.txt'),
+        link: 0,
         title: '',
         id: '',
         showMenu: false
       }
     },
+    watch: {
+      link () {
+        this.getMain()
+        wx.setNavigationBarTitle({
+          title: this.chapters[this.link].title
+        })
+      }
+    },
     methods: {
+      goBack () {
+        wx.switchTab({
+          url: '/pages/index/main'
+        })
+      },
+      backMain () {
+        if (this.link === 0) {
+          wx.showToast({
+            title: '没有上一章了',
+            icon: 'none',
+            duration: 1000
+          })
+        } else {
+          this.link -= 1
+        }
+      },
+      nextMain () {
+        if (this.link >= this.chapters.length) {
+          wx.showToast({
+            title: '施主，这最后一章了~',
+            icon: 'none',
+            duration: 1000
+          })
+        } else {
+          this.link += 1
+        }
+      },
       goBookList () {
         wx.navigateTo({
           url: '/pages/section/main?id=' + encodeURIComponent(this.id) + '&title=' + encodeURIComponent(this.title)
@@ -38,34 +73,44 @@
       // 弹出下面菜单
       getMenu () {
         this.showMenu = !this.showMenu
+      },
+      getMain () {
+        console.log(this.chapters[this.link])
+        this.$ajax.get(this.apis.privilegeManageApis.bookMain + '/' + encodeURIComponent(this.chapters[this.link].link))
+          .then(res => {
+            console.log(res)
+            this.body = JSON.stringify(res.chapter.body).split('n')
+            let newBody = []
+            this.body.forEach(item => {
+              // 使用正则去掉多余的符号
+              newBody.push(item.replace(/"/g, '').replace(/\\/g, ''))
+              // console.log(item.replace(/"/g, '').replace(/\\/g, ''))
+            })
+            this.$set(this, 'body', newBody)
+            wx.pageScrollTo({
+              scrollTop: 0,
+              duration: 0
+            })
+            // console.log(JSON.stringify(res.chapter.body).split('n'))
+          }).catch(err => {
+            console.log(err)
+          })
       }
     },
     mounted () {
-      if (this.$root.$mp.query.link) {
-        this.link = this.$root.$mp.query.link
-      }
-      if (this.$root.$mp.query.title) {
-        this.title = decodeURIComponent(this.$root.$mp.query.title)
-      }
-      if (this.$root.$mp.query.id) {
-        this.id = decodeURIComponent(this.$root.$mp.query.id)
-      }
-      wx.setNavigationBarTitle({
-        title: this.title
-      })
-      console.log('link：', decodeURIComponent(this.link))
-      this.$ajax.get(this.apis.privilegeManageApis.bookMain + '/' + this.link)
+      this.link = +this.$root.$mp.query.link
+      // if (this.$root.$mp.query.title) {
+      //   this.title = decodeURIComponent(this.$root.$mp.query.title)
+      // }
+      this.id = decodeURIComponent(this.$root.$mp.query.id)
+      this.$ajax.get(this.apis.privilegeManageApis.bookMark + '/' + this.id)
         .then(res => {
           console.log(res)
-          this.body = JSON.stringify(res.chapter.body).split('n')
-          let newBody = []
-          this.body.forEach(item => {
-            // 使用正则去掉多余的符号
-            newBody.push(item.replace(/"/g, '').replace(/\\/g, ''))
-            // console.log(item.replace(/"/g, '').replace(/\\/g, ''))
+          this.chapters = res.mixToc.chapters
+          this.getMain()
+          wx.setNavigationBarTitle({
+            title: this.chapters[this.link].title
           })
-          this.$set(this, 'body', newBody)
-          // console.log(JSON.stringify(res.chapter.body).split('n'))
         }).catch(err => {
           console.log(err)
         })
@@ -73,7 +118,7 @@
     onUnload () {
       this.chapters = {}
       this.body = ''
-      this.link = ''
+      this.link = 0
       this.title = ''
       this.id = ''
       this.showMenu = false

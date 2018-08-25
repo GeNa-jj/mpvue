@@ -1,7 +1,7 @@
 <template>
   <div class="boxShade">
-    <div v-for="(item, index) in books" :key="index" class="imgUrl" @click="bookDetial(item._id, item.title)">
-      <img :src="'http://statics.zhuishushenqi.com' + item.cover"  alt="">
+    <div v-for="(item, index) in books" :key="index" class="imgUrl" @click="bookDetial(item.id, item.link)">
+      <img :src="'http://statics.zhuishushenqi.com' + item.cover" alt=""  @longpress="deleteBook(index)">
       <p>{{item.title}}</p>
     </div>
     <!-- <p style="color: #ccc">书架没有书~~</p> -->
@@ -14,48 +14,7 @@ export default {
   data () {
     return {
       userInfo: '',
-      books: [
-        // {
-        //   cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
-        //   _id: '5816b415b06d1d32157790b1',
-        //   title: '圣墟'
-        // },
-        // {
-        //   cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
-        //   _id: '5816b415b06d1d32157790b1',
-        //   title: '圣墟'
-        // },
-        // {
-        //   cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
-        //   _id: '5816b415b06d1d32157790b1',
-        //   title: '圣墟'
-        // },
-        // {
-        //   cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
-        //   _id: '5816b415b06d1d32157790b1',
-        //   title: '圣墟'
-        // },
-        // {
-        //   cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
-        //   _id: '5816b415b06d1d32157790b1',
-        //   title: '圣墟'
-        // },
-        // {
-        //   cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
-        //   _id: '5816b415b06d1d32157790b1',
-        //   title: '圣墟'
-        // },
-        // {
-        //   cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
-        //   _id: '5816b415b06d1d32157790b1',
-        //   title: '圣墟'
-        // },
-        // {
-        //   cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
-        //   _id: '5816b415b06d1d32157790b1',
-        //   title: '圣墟'
-        // }
-      ]
+      books: []
     }
   },
   methods: {
@@ -97,18 +56,37 @@ export default {
     //     return true
     //   }
     // },
-    bookDetial (id, title) {
+    bookDetial (id, link = 0) {
       wx.navigateTo({
-        url: '/pages/section/main?id=' + encodeURIComponent(id) + '&title=' + encodeURIComponent(title)
+        url: '/pages/bookmain/main?id=' + encodeURIComponent(id) + '&link=' + link
+      })
+    },
+    getBookList () {
+      this.books = wx.getStorageSync('id_list')
+    },
+    deleteBook (index) {
+      const that = this
+      wx.showModal({
+        title: '提示',
+        content: '确定要删除此书吗？',
+        success: function (res) {
+          if (res.confirm) {
+            console.log('点击确定了')
+            that.books.splice(index, 1)
+            wx.setStorageSync('id_list', that.books)
+          } else if (res.cancel) {
+            console.log('点击取消了')
+            return false
+          }
+        }
       })
     }
   },
-
   created () {
     // 调用应用实例的方法获取全局数据
     // this.getUserInfo()
   },
-  mounted () {
+  onShow  () {
     // this.getUserInfo()
     // this.login()
     // wx.getSetting({
@@ -116,6 +94,7 @@ export default {
     //     console.log(res)
     //   }
     // })
+    this.getBookList()
   }
 }
 </script>
@@ -137,7 +116,7 @@ export default {
     }
     p{
       font-size: 13px;
-      line-height: 1;
+      line-height: 1.2;
     }
   }
 }
