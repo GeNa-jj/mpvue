@@ -2,8 +2,8 @@
  * 系统相关配置
  */
 const ipConfig = {
-  book: 'http://api.zhuishushenqi.com/',
-  bookMain: 'http://chapter2.zhuishushenqi.com/',
-  bookImg: 'http://statics.zhuishushenqi.com'
+  book: 'https://api.zhuishushenqi.com/',
+  bookMain: 'https://chapter2.zhuishushenqi.com/',
+  bookImg: 'https://statics.zhuishushenqi.com'
 }
 export default ipConfig

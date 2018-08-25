@@ -3,7 +3,11 @@
   <div class="bookmain">
     <!-- <h2>{{body}}</h2> -->
     <p v-for="(item, index) in body" :key="index">{{item}}</p>
-    <div class="menu" :class="{'menuBlack': showMenu}" @click="getMenu"></div>
+    <div class="next">
+      <div>上一章</div>
+      <div>下一章</div>
+    </div>
+    <div class="menu" @click="getMenu"></div>
     <div class="bottomBox" :class="{'showBtn': showMenu}">
       <div>上一章</div>
       <div @click="goBookList">目录</div>
@@ -87,17 +91,24 @@
       line-height: 1.5;
       margin: 20px 0;
     }
+    .next{
+      display: flex;
+      justify-content: space-between;
+      div{
+        text-align: center;
+        /*flex: 1;*/
+        padding: 20px;
+        color: #f00;
+      }
+    }
     .menu{
       position: fixed;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100vh;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 180px;
+      height: 400px;
       transition: all .2s ease-in-out;
-    }
-    .menuBlack{
-      background-color: #000;
-      opacity: .5;
     }
     .bottomBox{
       position: fixed;

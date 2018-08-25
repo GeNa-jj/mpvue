@@ -15,46 +15,46 @@ export default {
     return {
       userInfo: '',
       books: [
-        {
-          cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
-          _id: '5816b415b06d1d32157790b1',
-          title: '圣墟'
-        },
-        {
-          cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
-          _id: '5816b415b06d1d32157790b1',
-          title: '圣墟'
-        },
-        {
-          cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
-          _id: '5816b415b06d1d32157790b1',
-          title: '圣墟'
-        },
-        {
-          cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
-          _id: '5816b415b06d1d32157790b1',
-          title: '圣墟'
-        },
-        {
-          cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
-          _id: '5816b415b06d1d32157790b1',
-          title: '圣墟'
-        },
-        {
-          cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
-          _id: '5816b415b06d1d32157790b1',
-          title: '圣墟'
-        },
-        {
-          cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
-          _id: '5816b415b06d1d32157790b1',
-          title: '圣墟'
-        },
-        {
-          cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
-          _id: '5816b415b06d1d32157790b1',
-          title: '圣墟'
-        }
+        // {
+        //   cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
+        //   _id: '5816b415b06d1d32157790b1',
+        //   title: '圣墟'
+        // },
+        // {
+        //   cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
+        //   _id: '5816b415b06d1d32157790b1',
+        //   title: '圣墟'
+        // },
+        // {
+        //   cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
+        //   _id: '5816b415b06d1d32157790b1',
+        //   title: '圣墟'
+        // },
+        // {
+        //   cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
+        //   _id: '5816b415b06d1d32157790b1',
+        //   title: '圣墟'
+        // },
+        // {
+        //   cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
+        //   _id: '5816b415b06d1d32157790b1',
+        //   title: '圣墟'
+        // },
+        // {
+        //   cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
+        //   _id: '5816b415b06d1d32157790b1',
+        //   title: '圣墟'
+        // },
+        // {
+        //   cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
+        //   _id: '5816b415b06d1d32157790b1',
+        //   title: '圣墟'
+        // },
+        // {
+        //   cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F1228859_d14f18e849b34420904ead54936e440a.jpg%2F',
+        //   _id: '5816b415b06d1d32157790b1',
+        //   title: '圣墟'
+        // }
       ]
     }
   },
