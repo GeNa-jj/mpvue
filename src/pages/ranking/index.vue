@@ -42,8 +42,7 @@
       height: 50px;
       line-height: 50px;
       font-size: 13px;
-      border: 1px solid #f00;
-      color: #f00;
+      border: 1px solid #ccc;
       margin-bottom: 15px;
       text-align: center;
       border-radius: 5px;

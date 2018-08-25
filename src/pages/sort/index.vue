@@ -80,8 +80,7 @@
       line-height: .7rem;
       width: 2rem;
       height: .7rem;
-      border: 1px solid #f00;
-      color: #f00;
+      border: 1px solid #ccc;
       margin: .1rem;
       border-radius: .1rem;
       font-size: .26rem;

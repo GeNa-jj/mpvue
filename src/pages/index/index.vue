@@ -1,6 +1,6 @@
 <template>
   <div class="boxShade">
-    <div v-for="(item, index) in books" :key="index" class="imgUrl" @click="bookDetial(item.id, item.link)">
+    <div v-for="(item, index) in books" :key="index" class="imgUrl" @click="bookDetial(item.id, item.link, item.title)">
       <img :src="'http://statics.zhuishushenqi.com' + item.cover" alt=""  @longpress="deleteBook(index)">
       <p>{{item.title}}</p>
     </div>
@@ -56,9 +56,9 @@ export default {
     //     return true
     //   }
     // },
-    bookDetial (id, link = 0) {
+    bookDetial (id, link, bookTitle) {
       wx.navigateTo({
-        url: '/pages/bookmain/main?id=' + encodeURIComponent(id) + '&link=' + link
+        url: '/pages/bookmain/main?id=' + encodeURIComponent(id) + '&link=' + (link || 0) + '&bookTitle=' + bookTitle
       })
     },
     getBookList () {
