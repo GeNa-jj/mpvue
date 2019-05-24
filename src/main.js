@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import App from './App'
 import request from './config/ajax'
-import './css/iconfont.css'
-import './css/common.scss'
 
 Vue.use(request)
 

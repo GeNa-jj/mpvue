@@ -11,8 +11,8 @@
       </div>
     </div>
     <div class="btn">
-      <button @click="toread">开始阅读</button>
-      <button @click="joinBookrack">加入书架</button>
+      <button @click="toread()">开始阅读</button>
+      <button>加入书架</button>
     </div>
     <p class="detail">{{shortIntro}}</p>
   </div>
@@ -35,32 +35,8 @@
       toread () {
         const that = this
         wx.navigateTo({
-          url: '/pages/section/main?id=' + encodeURIComponent(that.id) + '&name=' + encodeURIComponent(that.title)
+          url: '/pages/bookdetail/main?id=' + encodeURIComponent(that.id) + '&name=' + encodeURIComponent(that.title)
         })
-      },
-      joinBookrack () {
-        let bookIdList = wx.getStorageSync('id_list') || []
-        for (let i = 0; i < bookIdList.length; i++) {
-          if (bookIdList[i].id === this.id) {
-            wx.showToast({
-              title: '此书已经在书架',
-              icon: 'none',
-              duration: 1000
-            })
-            return
-          }
-        }
-        bookIdList.push({
-          id: this.id,
-          title: this.title,
-          cover: this.cover
-        })
-        wx.setStorageSync('id_list', bookIdList)
-        wx.showToast({
-          title: '加入成功！',
-          duration: 1000
-        })
-        console.log(bookIdList)
       }
     },
     created () {

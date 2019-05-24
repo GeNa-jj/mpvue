@@ -19,7 +19,7 @@
     methods: {
       bookMain (link, title) {
         wx.navigateTo({
-          url: '/pages/bookmain/main?link=' + encodeURIComponent(link) + '&title=' + encodeURIComponent(title) + '&id=' + encodeURIComponent(this.id)
+          url: '/pages/bookmain/main?link=' + encodeURIComponent(link) + '&title=' + encodeURIComponent(title)
         })
       }
     },
@@ -29,11 +29,11 @@
       if (this.$root.$mp.query.id) {
         this.id = this.$root.$mp.query.id
       }
-      if (this.$root.$mp.query.title) {
-        this.title = decodeURIComponent(this.$root.$mp.query.title)
+      if (this.$root.$mp.query.name) {
+        this.name = decodeURIComponent(this.$root.$mp.query.name)
       }
       wx.setNavigationBarTitle({
-        title: this.title
+        title: this.name
       })
       console.log('id：', decodeURIComponent(this.id))
       this.$ajax.get(this.apis.privilegeManageApis.bookMark + '/' + this.id)
